@@ -1,0 +1,96 @@
+
+* {
+  -webkit-user-drag: none;
+  box-sizing: border-box;
+}
+
+body,
+ol,
+ul,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+th,
+td,
+dl,
+dd,
+form,
+fieldset,
+legend,
+input,
+textarea,
+select,
+a {
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --dark-color: #f2f3f5;
+  --com-drak-Bgcolor: #29292c;
+  --com-drak-color: #e5eaf3;
+  --com-head-Bgcolor:#232324;
+  --com-head-color:#f2f3f5;
+}
+html.dark {
+  /* 自定义深色背景颜色 */
+  --el-bg-color: #232324 !important;
+  --dark-color: #29292c;
+  --com-drak-Bgcolor: #f2f3f5;
+  --com-drak-color: #303133;
+  --com-head-Bgcolor:#f2f3f5;
+  --com-head-color:#232324;
+
+}
+html,
+body,
+#app {
+  transition: 0.2s;
+  font-size: 16px;
+  background-color: var(--dark-color);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+em,
+i {
+  font-style: normal;
+}
+
+li {
+  list-style: none;
+}
+
+img {
+  border: 0;
+  vertical-align: middle;
+  user-select: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+input:focus::-webkit-contacts-auto-fill-button {
+  opacity: 0;
+}
+
+input::-webkit-contacts-auto-fill-button {
+  visibility: hidden !important;
+  display: none !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  right: 0 !important;
+}

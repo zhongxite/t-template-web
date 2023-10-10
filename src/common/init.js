@@ -9,7 +9,7 @@ export const init = defineStore({
     routerList: [],
   }),
   actions: {
-    getRouter(router) {
+    getRouter(router,url) {
       const modules = import.meta.glob("/src/**/**/*.vue"); // 导入
       if (this.routerList.length == 0) {
         getUserRouter().then((res) => {
@@ -45,6 +45,7 @@ export const init = defineStore({
       routeInit.forEach((item) => {
         router.addRoute("redirectName", item);
       });
+      url&&router.replace({ name:url });
     },
   },
   persist: true,

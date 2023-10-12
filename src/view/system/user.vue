@@ -1,63 +1,26 @@
 <template>
   <div class="mainBox">
-    <SearchForm
-      v-model:queryFormList="queryFormList"
-      v-model:queryForm="queryForm"
-      v-model:operateBtnList="operateBtnList"
-      @clickSearch="receiveSearchForm"
-    />
-    <Table
-      v-model="tableTemplate"
-      v-model:tableList="tableList"
-      v-model:tablePage="queryForm.page"
-      v-model:tablePageNum="queryForm.pageNum"
-      v-model:tableTotal="tableTotal"
-      v-model:loading="loading"
-      @tablePageChange="tablePageChange"
-    />
+    <SearchForm v-model:queryFormList="queryFormList" v-model:queryForm="queryForm"
+      v-model:operateBtnList="operateBtnList" @clickSearch="receiveSearchForm" />
+    <Table v-model="tableTemplate" v-model:tableList="tableList" v-model:tablePage="queryForm.page"
+      v-model:tablePageNum="queryForm.pageNum" v-model:tableTotal="tableTotal" v-model:loading="loading"
+      @tablePageChange="tablePageChange" />
   </div>
-  <Dialog
-    v-model="ifShowUserDataDialogBox"
-    v-model:width="dialogWidth"
-    v-model:title="dialogTitle"
-  >
+  <Dialog v-model="ifShowUserDataDialogBox" v-model:width="dialogWidth" v-model:title="dialogTitle">
     <el-scrollbar>
-      <el-form
-        ref="form"
-        :model="dialogForm"
-        label-width="auto"
-        class="userBox"
-      >
+      <el-form ref="form" :model="dialogForm" label-width="auto" class="userBox">
         <el-form-item label="头像" class="formItem">
-          <el-image
-            :close-on-press-escape="false"
-            :preview-src-list="[
-              dialogForm.avatar ? dialogForm.avatar : defaultImg,
-            ]"
-            class="headImg"
-            :src="dialogForm.avatar ? dialogForm.avatar : defaultImg"
-            fit="cover"
-          />
-          <el-upload
-            v-model:file-list="fileList"
-            action="http://localhost/api/common/uploadOss"
-            multiple
-            :before-upload="beforeUpload"
-            :show-file-list="false"
-            accept=".jpg,.jpeg,.png,.gif,.JPG,.JPEG,.GIF,"
-            :on-success="onSuccessUploadFile"
-          >
+          <el-image :close-on-press-escape="false" :preview-src-list="[
+            dialogForm.avatar ? dialogForm.avatar : defaultImg,
+          ]" class="headImg" :src="dialogForm.avatar ? dialogForm.avatar : defaultImg" fit="cover" />
+          <el-upload v-model:file-list="fileList" action="http://localhost/api/common/uploadOss" multiple
+            :before-upload="beforeUpload" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif,.JPG,.JPEG,.GIF,"
+            :on-success="onSuccessUploadFile">
             <el-button text plain bg type="primary">点击上传</el-button>
           </el-upload>
         </el-form-item>
         <el-form-item label="姓名" prop="name" class="formItem">
-          <el-input
-            v-model="dialogForm.name"
-            type="text"
-            maxlength="10"
-            show-word-limit
-            clearable
-          />
+          <el-input v-model="dialogForm.name" type="text" maxlength="10" show-word-limit clearable />
         </el-form-item>
         <el-form-item label="性别" prop="sex" class="formItem">
           <el-radio-group v-model="dialogForm.sex">
@@ -67,37 +30,16 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="手机号码" prop="phone" class="formItem">
-          <el-input
-            v-model="dialogForm.phone"
-            type="text"
-            placeholder="请更新手机号"
-            maxlength="11"
-            show-word-limit
-            clearable
-          />
+          <el-input v-model="dialogForm.phone" type="text" placeholder="请更新手机号" maxlength="11" show-word-limit
+            clearable />
         </el-form-item>
         <el-form-item label="邮箱" prop="email" class="formItem">
-          <el-input
-            v-model="dialogForm.email"
-            type="text"
-            placeholder="请更新邮箱"
-            show-word-limit
-            clearable
-          />
+          <el-input v-model="dialogForm.email" type="text" placeholder="请更新邮箱" show-word-limit clearable />
         </el-form-item>
         <el-form-item label="登录账号名" prop="accountName" class="formItem">
-          <el-input
-            :disabled="ifFixStatus"
-            v-model="dialogForm.accountName"
-            type="text"
-          />
+          <el-input :disabled="ifFixStatus" v-model="dialogForm.accountName" type="text" />
         </el-form-item>
-        <el-form-item
-          v-if="!ifFixStatus"
-          label="登录密码"
-          prop="password"
-          class="formItem"
-        >
+        <el-form-item v-if="!ifFixStatus" label="登录密码" prop="password" class="formItem">
           <el-input show-password v-model="dialogForm.password" type="text" />
         </el-form-item>
         <el-form-item label="所属角色" prop="roleName" class="formItem">
@@ -109,22 +51,16 @@
       </el-form>
     </el-scrollbar>
     <div class="subBtn">
-      <el-button
-        class="btn"
-        :icon="submitFormRes ? Check : ''"
-        type="success"
-        :loading="loadingStatus"
-        @click="submitUserFormData"
-        >{{
+      <el-button class="btn" :icon="submitFormRes ? Check : ''" type="success" :loading="loadingStatus"
+        @click="submitUserFormData">{{
           !loadingStatus && !submitFormRes
-            ? "确认"
-            : submitFormRes
+          ? "确认"
+          : submitFormRes
             ? ifFixStatus
               ? "修改成功"
               : "创建成功"
             : "正在提交"
-        }}</el-button
-      >
+        }}</el-button>
       <el-button class="btn" @click="changeFixStatus">取消</el-button>
     </div>
   </Dialog>
@@ -150,7 +86,6 @@ const Table = defineAsyncComponent(() => {
 const Dialog = defineAsyncComponent(() => {
   return import("@/components/dialog/index.vue");
 });
-const modules = import.meta.glob("/src/**/**/*.vue"); // 导入
 let queryForm = ref({
   pageNum: 1,
   page: 10,
@@ -360,7 +295,7 @@ const tableTemplate = ref([
     label: "创建时间",
     prop: "created",
     isShowZero: false,
-    minWidth:140
+    minWidth: 140
   },
 
   {
@@ -381,8 +316,8 @@ const tableTemplate = ref([
               dialogForm.value.sex == "男"
                 ? 1
                 : dialogForm.value.sex == "女"
-                ? 2
-                : 0;
+                  ? 2
+                  : 0;
             fileList.value = [];
             ifFixStatus.value = true;
             ifShowUserDataDialogBox.value = true;
@@ -412,7 +347,7 @@ const tableTemplate = ref([
                   }
                 });
               })
-              .catch(() => {});
+              .catch(() => { });
           },
         },
       },
@@ -491,6 +426,8 @@ const submitUserFormData = () => {
           }, 1000);
         }, 1000);
       }
+    }).catch(() => {
+      loadingStatus.value = false
     });
   } else {
     createUser(dialogForm.value).then((res) => {
@@ -506,6 +443,8 @@ const submitUserFormData = () => {
       } else {
         loadingStatus.value = false;
       }
+    }).catch(() => {
+      loadingStatus.value = false
     });
   }
 };
@@ -519,14 +458,17 @@ getList();
   flex-direction: column;
   align-items: center;
 }
+
 .userBox {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   .formItem {
     display: flex;
     align-items: center;
+
     .headImg {
       width: 140px;
       height: 140px;
@@ -535,11 +477,13 @@ getList();
     }
   }
 }
+
 .subBtn {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   .btn {
     width: 48%;
   }

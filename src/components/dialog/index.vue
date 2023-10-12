@@ -1,19 +1,11 @@
 <template>
-  <el-dialog
-    :model-value="props.modelValue"
-    @close="closeDrawer"
-    :show-close="false"
-    :width="props.width"
-    align-center
-    :close-on-press-escape="false"
-  >
+  <el-dialog :model-value="props.modelValue" @close="closeDrawer" :show-close="false" :width="props.width" align-center
+    :close-on-press-escape="false">
     <template #header>
       <div class="dialogBox">
         <h1 style="color: var(--el-menu-text-color)">{{ props.title }}</h1>
         <el-button type="danger" @click="closeDrawer">
-          <el-icon class="el-icon--center"
-            ><i class="ri-close-circle-line"></i
-          ></el-icon>
+          <el-icon class="el-icon--center"><i class="ri-close-circle-line"></i></el-icon>
         </el-button>
       </div>
     </template>

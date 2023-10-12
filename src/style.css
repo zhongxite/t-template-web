@@ -1,4 +1,3 @@
-
 * {
   -webkit-user-drag: none;
   box-sizing: border-box;
@@ -32,8 +31,8 @@ a {
   --dark-color: #f2f3f5;
   --com-drak-Bgcolor: #29292c;
   --com-drak-color: #e5eaf3;
-  --com-head-Bgcolor:#232324;
-  --com-head-color:#f2f3f5;
+  --com-head-Bgcolor: #232324;
+  --com-head-color: #f2f3f5;
 }
 html.dark {
   /* 自定义深色背景颜色 */
@@ -41,9 +40,8 @@ html.dark {
   --dark-color: #29292c;
   --com-drak-Bgcolor: #f2f3f5;
   --com-drak-color: #303133;
-  --com-head-Bgcolor:#f2f3f5;
-  --com-head-color:#232324;
-
+  --com-head-Bgcolor: #f2f3f5;
+  --com-head-color: #232324;
 }
 html,
 body,
@@ -93,4 +91,12 @@ input::-webkit-contacts-auto-fill-button {
   pointer-events: none !important;
   position: absolute !important;
   right: 0 !important;
+}
+
+.el-cascader-menu__wrap {
+  height: auto!important;
+  max-height: 200px;
+}
+.el-cascader-menu{
+  height: auto!important;
 }

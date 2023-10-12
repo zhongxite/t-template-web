@@ -10,20 +10,20 @@
         <el-sub-menu index="2" v-if="item.children">
           <template #title>
             <Icon :icon="item.icon" class="myIcon" />
-            <span>{{ item.meta.title }}</span>
+            <span>{{ item.name}}</span>
           </template>
           <el-menu-item
             v-for="(items, index) in item.children"
             :index="item.path + '/' + items.path"
             >
             <Icon :icon="items.icon" class="myIcon" />
-            <span>{{ items.meta.title }}</span>
+            <span>{{ items.name }}</span>
             </el-menu-item
           >
         </el-sub-menu>
         <el-menu-item :index="item.path" v-else>
           <Icon :icon="item.icon" class="myIcon" />
-          <span>{{ item.meta.title }}</span>
+          <span>{{ item.name }}</span>
         </el-menu-item>
       </template>
     </el-menu>
@@ -38,7 +38,6 @@ import { init } from "@/common/init";
 let { routerList } = storeToRefs(init());
 const router = useRouter();
 let menuName = ref("");
-console.log(routerList.value);
 watch(
   [() => router.currentRoute.value.path],
   (to, from) => {

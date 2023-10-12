@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { getUserRouter } from "@/api/user";
+import {  getMenusList } from '@/api/menu';
+
 export const init = defineStore({
   id: "init",
   state: () => ({
@@ -9,12 +11,13 @@ export const init = defineStore({
     routerList: [],
   }),
   actions: {
-    getRouter(router,url) {
+    getRouter(router,url,isInit) {
       const modules = import.meta.glob("/src/**/**/*.vue"); // 导入
-      if (this.routerList.length == 0) {
-        getUserRouter().then((res) => {
+      if (this.routerList.length == 0 || isInit) {
+        getMenusList().then((res) => {
           if (res.code == 200) {
-            this.routerList = res.data.router;
+            this.routerList = res.data;
+            console.log(this.routerList);
           }
         });
       }
@@ -22,7 +25,7 @@ export const init = defineStore({
       this.routerList.forEach((item) => {
         let route = {};
         route = {
-          name: item.name,
+          name: item.mark,
           path: item.path,
           meta: item.meta,
           component: item.component
@@ -33,7 +36,7 @@ export const init = defineStore({
           route.children = [];
           item.children.forEach((items) => {
             route.children.push({
-              name: items.name,
+              name: items.mark,
               path: items.path,
               meta: items.meta,
               component: modules[`/src/${items.component}.vue`], //路由按需加载

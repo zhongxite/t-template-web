@@ -62,6 +62,7 @@ const subLogin = () => {
         type: "success",
       });
       init().getRouter(router,"index");
+      // router.replace({ name:"index" });
     }
   });
 };

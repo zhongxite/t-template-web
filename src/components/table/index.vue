@@ -1,74 +1,44 @@
 <template>
-  <el-table
-    class="tabBox"
-    stripe
-    border
-    highlight-current-row
-    :data="props.tableList"
-    @selection-change="handleSelectionChange"
-    :header-cell-style="{ background: 'var(--el-border-color)' }"
-    row-key="id"
-    table-layout="fixed"
-  >
+  <el-table class="tabBox" stripe border highlight-current-row :data="props.tableList"
+    @selection-change="handleSelectionChange" :header-cell-style="{ background: 'var(--el-border-color)' }" row-key="id"
+    table-layout="fixed">
     <template v-for="item in props.modelValue">
-      <el-table-column
-        v-if="item.type == 'selection'"
-        :type="item.type"
-        :width="item.width"
-      >
+      <el-table-column v-if="item.type == 'selection'" :type="item.type" :width="item.width">
       </el-table-column>
-      <el-table-column
-        v-else
-        align="center"
-        :show-overflow-tooltip="item.type == 'text' ? true : false"
-        :label="item.label"
-        :width="item.width"
-        :min-width="item.minWidth"
-        :fixed="item.type == 'btn' ? 'right' : false"
-        fit
-        :prod="item.prod"
-      >
+      <el-table-column v-else align="center" :show-overflow-tooltip="item.type == 'text' ? true : false"
+        :label="item.label" :width="item.width" :min-width="item.minWidth" :fixed="item.type == 'btn' ? 'right' : false"
+        fit :prod="item.prod">
         <template #default="scope" v-if="item.type == 'text'">
           {{
             scope.row[item.prop]
-              ? scope.row[item.prop]
-              : item.isShowZero
+            ? scope.row[item.prop]
+            : item.isShowZero
               ? scope.row[item.prop]
               : "-"
           }}
         </template>
         <template #default="scope" v-if="item.type == 'img'">
           <div class="tabImgBox">
-            <el-image
-              class="tabImg"
-              :src="scope.row[item.prop]"
-              preview-teleported
-              :preview-src-list="
-                scope.row[item.previewListName]
-                  ? scope.row[item.previewListName]
-                  : [scope.row[item.prop]]
-              "
-            />
+            <el-image class="tabImg" :src="scope.row[item.prop]" preview-teleported :preview-src-list="scope.row[item.previewListName]
+              ? scope.row[item.previewListName]
+              : [scope.row[item.prop]]
+              " />
           </div>
         </template>
         <template #default="scope" v-if="item.type == 'tag'">
           <el-tag>
             {{
               scope.row[item.prop]
-                ? scope.row[item.prop]
-                : item.isShowZero
+              ? scope.row[item.prop]
+              : item.isShowZero
                 ? scope.row[item.prop]
                 : "-"
             }}
           </el-tag>
         </template>
         <template #default="scope" v-if="item.type == 'switch'">
-          <el-switch
-            v-model="scope.row[item.prop]"
-            inline-prompt
-            :active-icon="Check"
-            :inactive-icon="Close"
-          />
+          <el-switch v-model="scope.row[item.prop]" inline-prompt :active-icon="Check" :inactive-icon="Close" :disabled="item.isDisabled"
+            active-value="1" inactive-value="0" />
         </template>
         <template #default="scope" v-if="item.type == 'icon'">
           <div class="tableIconBox">
@@ -76,19 +46,9 @@
           </div>
         </template>
         <template #default="scope" v-if="item.type == 'btn'">
-          <el-button
-            v-for="(btnItem, btnIndex) in item.list(scope.row)"
-            v-show="btnItem.show"
-            :key="btnIndex"
-            class="btn"
-            text
-            bg
-            :type="btnItem.type"
-            :color="btnItem.color"
-            plain
-            v-on="btnItem.listeners"
-            >{{ btnItem.name }}</el-button
-          >
+          <el-button v-for="(btnItem, btnIndex) in item.list(scope.row)" v-show="btnItem.show" :key="btnIndex" class="btn"
+            text bg :type="btnItem.type" :color="btnItem.color" plain v-on="btnItem.listeners">{{ btnItem.name
+            }}</el-button>
         </template>
       </el-table-column>
     </template>
@@ -97,15 +57,9 @@
       <el-empty :image-size="200" description="暂无数据" />
     </template>
   </el-table>
-  <el-pagination
-    v-if="props.tablePage && props.tablePageNum"
-    background
-    layout="prev, pager, next"
-    :default-page-size="props.tablePage"
-    :current-page="props.tablePageNum"
-    :total="props.tableTotal"
-    @current-change="handleCurrentChange"
-  />
+  <el-pagination v-if="props.tablePage && props.tablePageNum" background layout="prev, pager, next"
+    :default-page-size="props.tablePage" :current-page="props.tablePageNum" :total="props.tableTotal"
+    @current-change="handleCurrentChange" />
   <Loading />
 </template>
 <script setup>
@@ -166,24 +120,30 @@ const handleCurrentChange = (val) => {
 <style scoped lang="scss">
 .tabBox {
   flex: 1;
+
   :deep(.el-table__expanded-cell) {
     padding: 0;
   }
+
   :deep(.el-scrollbar__view) {
     height: 100%;
   }
+
   .tabImgBox {
     display: flex;
     align-items: center;
     justify-content: center;
+
     .tabImg {
       border-radius: 4px;
     }
   }
+
   .tableIconBox {
     display: flex;
     align-items: center;
     justify-content: center;
+
     .tabIcon {
       width: 30px;
     }

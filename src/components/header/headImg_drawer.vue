@@ -3,35 +3,17 @@
     <el-scrollbar height="calc(100vh - 200px)">
       <el-form ref="form" :model="fixForm" label-width="auto">
         <el-form-item label="头像" class="formItem">
-          <el-image
-            :close-on-press-escape="false"
-            :preview-src-list="[fixForm.avatar ? fixForm.avatar : defaultImg]"
-            class="headImg"
-            :src="fixForm.avatar ? fixForm.avatar : defaultImg"
-            fit="cover"
-          />
-          <el-upload
-            v-show="ifFixStatus"
-            v-model:file-list="fileList"
-            action="http://localhost/api/common/uploadOss"
-            multiple
-            :before-upload="beforeUpload"
-            :show-file-list="false"
-            accept=".jpg,.jpeg,.png,.gif,.JPG,.JPEG,.GIF,"
-            :on-success="onSuccessUploadFile"
-          >
+          <el-image :close-on-press-escape="false" :preview-src-list="[fixForm.avatar ? fixForm.avatar : defaultImg]"
+            class="headImg" :src="fixForm.avatar ? fixForm.avatar : defaultImg" fit="cover" />
+          <el-upload v-show="ifFixStatus" v-model:file-list="fileList" action="http://localhost/api/common/uploadOss"
+            multiple :before-upload="beforeUpload" :show-file-list="false" accept=".jpg,.jpeg,.png,.gif,.JPG,.JPEG,.GIF,"
+            :on-success="onSuccessUploadFile">
             <el-button text plain bg type="primary">点击上传</el-button>
           </el-upload>
         </el-form-item>
         <el-form-item label="姓名" prop="name" class="formItem">
-          <el-input
-            :disabled="!ifFixStatus"
-            v-model="fixForm.name"
-            type="text"
-            maxlength="10"
-            show-word-limit
-            clearable
-          />
+          <el-input :disabled="!ifFixStatus" v-model="fixForm.name" type="text" maxlength="10" show-word-limit
+            clearable />
         </el-form-item>
         <el-form-item label="性别" prop="sex" class="formItem">
           <el-radio-group v-model="fixForm.sex" :disabled="!ifFixStatus">
@@ -41,25 +23,12 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="手机号码" prop="phone" class="formItem">
-          <el-input
-            v-model="fixForm.phone"
-            type="text"
-            :disabled="!ifFixStatus"
-            placeholder="请更新手机号"
-            maxlength="11"
-            show-word-limit
-            clearable
-          />
+          <el-input v-model="fixForm.phone" type="text" :disabled="!ifFixStatus" placeholder="请更新手机号" maxlength="11"
+            show-word-limit clearable />
         </el-form-item>
         <el-form-item label="邮箱" prop="email" class="formItem">
-          <el-input
-            v-model="fixForm.email"
-            type="text"
-            :disabled="!ifFixStatus"
-            placeholder="请更新邮箱"
-            show-word-limit
-            clearable
-          />
+          <el-input v-model="fixForm.email" type="text" :disabled="!ifFixStatus" placeholder="请更新邮箱" show-word-limit
+            clearable />
         </el-form-item>
         <el-form-item label="登录账号名" prop="accountName" class="formItem">
           <el-input disabled v-model="fixForm.accountName" type="text" />
@@ -75,25 +44,17 @@
 
     <div class="btnBox">
       <div class="fixBtn" v-if="!ifFixStatus">
-        <el-button class="btn" type="warning" @click="changeFixStatus('fix')"
-          >修改信息</el-button
-        >
+        <el-button class="btn" type="warning" @click="changeFixStatus('fix')">修改信息</el-button>
       </div>
       <div class="subBtn" v-else>
-        <el-button
-          class="btn"
-          :icon="submitFormRes ? Check : ''"
-          type="success"
-          :loading="loadingStatus"
-          @click="submitUserFormData"
-          >{{
+        <el-button class="btn" :icon="submitFormRes ? Check : ''" type="success" :loading="loadingStatus"
+          @click="submitUserFormData">{{
             !loadingStatus && !submitFormRes
-              ? "确认"
-              : submitFormRes
+            ? "确认"
+            : submitFormRes
               ? "修改成功"
               : "正在提交"
-          }}</el-button
-        >
+          }}</el-button>
         <el-button class="btn" @click="changeFixStatus('fix')">取消</el-button>
       </div>
     </div>
@@ -169,9 +130,11 @@ const submitUserFormData = () => {
         }
       });
     }
+  }).catch(() => {
+    loadingStatus.value = false
   });
 };
-onActivated(()=>{
+onActivated(() => {
   fileList.value = []
 })
 </script>
@@ -181,9 +144,11 @@ onActivated(()=>{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   .formItem {
     display: flex;
     align-items: center;
+
     .headImg {
       width: 140px;
       height: 140px;
@@ -195,17 +160,21 @@ onActivated(()=>{
   .btnBox {
     width: 100%;
     display: flex;
+
     .fixBtn {
       width: 100%;
+
       .btn {
         width: 100%;
       }
     }
+
     .subBtn {
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       .btn {
         width: 48%;
       }

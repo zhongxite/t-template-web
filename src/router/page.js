@@ -12,16 +12,6 @@ const router = [
     name: "redirectName",
     redirect: "/index",
     component: () => import("@/page/home/index.vue"),
-    children: [
-      {
-        path: "/index",
-        name: "index",
-        component: () => import("@/page/index/index.vue"),
-        meta: {
-          title: "首页",
-        },
-      },
-    ],
   },
   {
     path: "/:catchAll(.*)",

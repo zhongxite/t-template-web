@@ -1,28 +1,23 @@
 <template>
   <div class="menuBox">
-    <el-menu
-      router
-      :default-active="menuName"
-      :collapse="menuCollapse"
-      unique-opened
-    >
+    <el-menu router :default-active="menuName" :collapse="menuCollapse" unique-opened>
       <template v-for="(item, index) in routerList">
-        <el-sub-menu index="2" v-if="item.children">
+        <el-sub-menu :index="item.path" v-if="item.children">
           <template #title>
-            <Icon :icon="item.icon" class="myIcon" />
-            <span>{{ item.name}}</span>
+            <el-icon>
+              <Icon :icon="item.icon" class="myIcon" />
+            </el-icon>
+            <span>{{ item.name }}</span>
           </template>
-          <el-menu-item
-            v-for="(items, index) in item.children"
-            :index="item.path + '/' + items.path"
-            >
+          <el-menu-item v-for="(items, index) in item.children" :index="item.path + '/' + items.path">
             <Icon :icon="items.icon" class="myIcon" />
             <span>{{ items.name }}</span>
-            </el-menu-item
-          >
+          </el-menu-item>
         </el-sub-menu>
         <el-menu-item :index="item.path" v-else>
-          <Icon :icon="item.icon" class="myIcon" />
+          <el-icon>
+            <Icon :icon="item.icon" class="myIcon" />
+          </el-icon>
           <span>{{ item.name }}</span>
         </el-menu-item>
       </template>
@@ -55,20 +50,24 @@ const changeMenuStatus = () => {
 </script>
 <style lang="scss">
 .myIcon {
-   width: 18px;
-   margin-right: 8px;
+  width: 18px;
+  margin-right: 8px;
 }
+
 .menuBox {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   .el-menu {
     border-right: 0 !important;
   }
+
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px !important;
   }
+
   .indentBox {
     padding: 10px;
     display: flex;
@@ -86,6 +85,7 @@ const changeMenuStatus = () => {
       font-size: 24px;
       color: var(--el-menu-text-color);
       transition: 0.3s;
+
       &:hover {
         background-color: var(--com-drak-Bgcolor);
         color: var(--com-drak-color);

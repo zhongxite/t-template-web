@@ -425,6 +425,8 @@ const submitUserFormData = () => {
             getList();
           }, 1000);
         }, 1000);
+      } else {
+        loadingStatus.value = false;
       }
     }).catch(() => {
       loadingStatus.value = false

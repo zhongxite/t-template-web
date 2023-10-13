@@ -129,6 +129,8 @@ const submitUserFormData = () => {
           }, 1000);
         }
       });
+    } else {
+      loadingStatus.value = false;
     }
   }).catch(() => {
     loadingStatus.value = false

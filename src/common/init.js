@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { getUserRouter } from "@/api/user";
 import {  getMenusList } from '@/api/menu';
 
 export const init = defineStore({
@@ -13,14 +12,13 @@ export const init = defineStore({
   actions: {
     getRouter(router,url,isInit) {
       const modules = import.meta.glob("/src/**/**/*.vue"); // 导入
-      if (this.routerList.length == 0 || isInit) {
+      // if (this.routerList.length == 0 || isInit) {
         getMenusList().then((res) => {
           if (res.code == 200) {
             this.routerList = res.data;
-            console.log(this.routerList);
           }
         });
-      }
+      // }
       let routeInit = [];
       this.routerList.forEach((item) => {
         let route = {};

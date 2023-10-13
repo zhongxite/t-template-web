@@ -6,9 +6,16 @@ export const getMenusList = (data) => {
     method: "post",
   });
 };
-export const addMenus = (data) => {
+export const menusAddOrModify = (data) => {
   return http({
-    url: "/api/menu/addMenus",
+    url: "/api/menu/menusAddOrModify",
+    method: "post",
+    data: qs.stringify(data),
+  });
+};
+export const deleteMenus = (data) => {
+  return http({
+    url: "/api/menu/deleteMenus",
     method: "post",
     data: qs.stringify(data),
   });

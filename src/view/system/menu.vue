@@ -25,9 +25,9 @@
             @change="classifyChange" />
         </el-form-item>
         <el-form-item v-if="dialogForm.type == 1" label="页面标题" prop="title" class="formItem">
-          <el-input v-model="dialogForm.meta.title" type="text" placeholder="请输入页面标题" show-word-limit clearable />
+          <el-input v-model="dialogForm.title" type="text" placeholder="请输入页面标题" show-word-limit clearable />
         </el-form-item>
-        <el-form-item v-if="dialogForm.type == 0 ||dialogForm.type == 1" label="页面标识" prop="mark" class="formItem">
+        <el-form-item v-if="dialogForm.type == 0 || dialogForm.type == 1" label="页面标识" prop="mark" class="formItem">
           <el-input v-model="dialogForm.mark" type="text" placeholder="请输入页面标识" show-word-limit clearable />
         </el-form-item>
         <el-form-item label="图标" prop="icon" class="formItem">
@@ -81,10 +81,13 @@
 </template>
 <script setup>
 import { Check, Close } from "@element-plus/icons-vue";
+import { ElMessageBox, ElNotification } from "element-plus";
 import { iconsList } from '@/static/icon/iconList';
-import { addMenus, getMenusList } from '@/api/menu';
+import { menusAddOrModify, getMenusList, deleteMenus } from '@/api/menu';
 import { convertTime } from "@/tools/common";
 import { onActivated, watch } from 'vue';
+import { init } from "@/common/init";
+const router = useRouter();
 const SearchForm = defineAsyncComponent(() => {
   return import("@/components/searchForm/index.vue");
 });
@@ -104,7 +107,7 @@ const operateBtnList = ref({
       listeners: {
         click: () => {
           dialogTitle = "创建";
-          dialogForm.value = {};
+          dialogForm.value = { isChange: 0 };
           ifFixStatus.value = false;
           ifShowUserDataDialogBox.value = true;
         },
@@ -153,7 +156,7 @@ const tableTemplate = ref([
     prop: "status",
     width: 100,
     isShowZero: false,
-    isDisabled:true
+    isDisabled: true
   },
   {
     type: "text",
@@ -175,10 +178,36 @@ const tableTemplate = ref([
         listeners: {
           click: () => {
             dialogTitle = "编辑";
-            dialogForm.value = {...row};
-            console.log(row);
+            dialogForm.value = { ...row, isChange: 1 };
             ifFixStatus.value = true;
             ifShowUserDataDialogBox.value = true;
+          },
+        },
+      },
+      {
+        name: "删除",
+        type: "",
+        color: "#e47470",
+        show: true,
+        listeners: {
+          click: () => {
+            ElMessageBox.confirm("确定是否删除?", "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning",
+            })
+              .then(() => {
+                deleteMenus({ id: row.id }).then((res) => {
+                  if (res.code == 200) {
+                    ElNotification({
+                      message: "删除成功",
+                      type: "success",
+                    });
+                    getList(init().getRouter(router));
+                  }
+                });
+              })
+              .catch(() => { });
           },
         },
       },
@@ -197,12 +226,13 @@ let dialogForm = ref({
   name: "",
   pid: "",
   type: "",
-  mark:"",
+  mark: "",
   title: "",
   icon: "",
   path: "",
   component: "",
-  status: ""
+  status: "",
+  isChange: 0
 });
 let ifFixStatus = ref(false);
 let loadingStatus = ref(false);
@@ -215,7 +245,7 @@ const changeFixStatus = () => {
 };
 const submitUserFormData = () => {
   loadingStatus.value = true;
-  addMenus(dialogForm.value).then(res => {
+  menusAddOrModify(dialogForm.value).then(res => {
     if (res.code == 200) {
       setTimeout(() => {
         loadingStatus.value = false
@@ -223,8 +253,11 @@ const submitUserFormData = () => {
         setTimeout(() => {
           changeFixStatus();
           getList();
+          init().getRouter(router);
         }, 1000);
       }, 1000);
+    } else {
+      loadingStatus.value = false
     }
   }).catch(() => {
     loadingStatus.value = false
@@ -245,19 +278,21 @@ const classifyChange = (value) => {
   dialogForm.value.pid = value
   classifyRef.value.togglePopperVisible();
 }
-const getList = () => {
+const getList = (init) => {
   getMenusList().then(res => {
     if (res.code == 200) {
       res.data.forEach(item => {
         item.updated = convertTime(item.updated);
-        options.value[0].children.push(item)
       })
+      options.value[0].children = res.data
       tableList.value = res.data
+      init && init()
     }
   })
 }
-onActivated(() => {
-  getList()
+getList()
+onActivated(()=>{
+  console.log(router);
 })
 </script>
 <style scoped lang="scss">

@@ -41,10 +41,3 @@ export const getUserList = (params) => {
     params,
   });
 };
-export const getUserRouter = (params) => {
-  return http({
-    url: "/api/user/getUserRouter",
-    method: "post",
-    params,
-  });
-};

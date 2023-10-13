@@ -38,7 +38,6 @@
 import { ElMessage, ElNotification } from "element-plus";
 import { login } from "@/api/user";
 import { init } from "@/common/init";
-import { nextTick } from "vue";
 let { token } = storeToRefs(init());
 const router = useRouter();
 let form = ref({

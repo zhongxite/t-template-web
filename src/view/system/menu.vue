@@ -84,7 +84,6 @@ import { Check, Close } from "@element-plus/icons-vue";
 import { ElMessageBox, ElNotification } from "element-plus";
 import { iconsList } from '@/static/icon/iconList';
 import { menusAddOrModify, getMenusList, deleteMenus } from '@/api/menu';
-import { convertTime } from "@/tools/common";
 import { onActivated, watch } from 'vue';
 import { init } from "@/common/init";
 const router = useRouter();
@@ -159,7 +158,14 @@ const tableTemplate = ref([
     isDisabled: true
   },
   {
-    type: "text",
+    type: "textTime",
+    label: "创建时间",
+    prop: "created",
+    isShowZero: false,
+    minWidth: 140
+  },
+  {
+    type: "textTime",
     label: "修改时间",
     prop: "updated",
     isShowZero: false,
@@ -281,9 +287,6 @@ const classifyChange = (value) => {
 const getList = (init) => {
   getMenusList().then(res => {
     if (res.code == 200) {
-      res.data.forEach(item => {
-        item.updated = convertTime(item.updated);
-      })
       options.value[0].children = res.data
       tableList.value = res.data
       init && init()
@@ -291,9 +294,6 @@ const getList = (init) => {
   })
 }
 getList()
-onActivated(()=>{
-  console.log(router);
-})
 </script>
 <style scoped lang="scss">
 .mainBox {

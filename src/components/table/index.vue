@@ -17,6 +17,15 @@
               : "-"
           }}
         </template>
+        <template #default="scope" v-if="item.type == 'textTime'">
+          {{
+              scope.row[item.prop]
+              ? convertTime(scope.row[item.prop])
+              : item.isShowZero
+                ? convertTime(scope.row[item.prop])
+                : "-"
+            }}
+        </template>
         <template #default="scope" v-if="item.type == 'img'">
           <div class="tabImgBox">
             <el-image class="tabImg" :src="scope.row[item.prop]" preview-teleported :preview-src-list="scope.row[item.previewListName]
@@ -37,8 +46,8 @@
           </el-tag>
         </template>
         <template #default="scope" v-if="item.type == 'switch'">
-          <el-switch v-model="scope.row[item.prop]" inline-prompt :active-icon="Check" :inactive-icon="Close" :disabled="item.isDisabled"
-            active-value="1" inactive-value="0" />
+          <el-switch v-model="scope.row[item.prop]" inline-prompt :active-icon="Check" :inactive-icon="Close"
+            :disabled="item.isDisabled" :active-value="1" :inactive-value="0" />
         </template>
         <template #default="scope" v-if="item.type == 'icon'">
           <div class="tableIconBox">
@@ -65,6 +74,7 @@
 <script setup>
 import { Check, Close } from "@element-plus/icons-vue";
 import { init } from "@/common/init";
+import { convertTime } from "@/tools/common";
 let { isShowLoadingBox } = storeToRefs(init());
 const Loading = defineAsyncComponent(() => {
   return import("@/components/loading/index.vue");

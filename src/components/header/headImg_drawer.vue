@@ -33,11 +33,10 @@
         <el-form-item label="登录账号名" prop="accountName" class="formItem">
           <el-input disabled v-model="fixForm.accountName" type="text" />
         </el-form-item>
-        <el-form-item label="所属角色" prop="roleName" class="formItem">
-          <el-input disabled v-model="fixForm.roleName" type="text" />
-        </el-form-item>
-        <el-form-item label="所属岗位" prop="postName" class="formItem">
-          <el-input disabled v-model="fixForm.postName" type="text" />
+        <el-form-item label="所属角色" prop="role" class="formItem">
+          <el-select :disabled="!ifFixStatus" v-model="fixForm.role" placeholder="请选择所属角色" clearable>
+            <el-option v-for="(options, optionIndex) in roleList" :label="options.name" :value="options.id" />
+          </el-select>
         </el-form-item>
       </el-form>
     </el-scrollbar>
@@ -66,9 +65,11 @@ import img from "@/static/image/defaultImg.png";
 import { init } from "@/common/init";
 import { ElNotification } from "element-plus";
 import { updateUserInfo, getUserInfo } from "@/api/user";
+import { getRoleList } from '@/api/role';
 import { onActivated } from "vue";
 let defaultImg = ref(img);
 let { userInfo } = storeToRefs(init());
+let roleList = ref([])
 let fixForm = ref({
   ...userInfo.value,
 });
@@ -136,6 +137,11 @@ const submitUserFormData = () => {
     loadingStatus.value = false
   });
 };
+getRoleList().then(roleRes => {
+  if (roleRes.code == 200) {
+    roleList.value = roleRes.data
+  }
+})
 onActivated(() => {
   fileList.value = []
 })
@@ -156,6 +162,10 @@ onActivated(() => {
       height: 140px;
       margin-right: 10px;
       border-radius: 50%;
+    }
+
+    :deep(.el-select) {
+      width: 100% !important;
     }
   }
 

@@ -42,11 +42,10 @@
         <el-form-item v-if="!ifFixStatus" label="登录密码" prop="password" class="formItem">
           <el-input show-password v-model="dialogForm.password" type="text" />
         </el-form-item>
-        <el-form-item label="所属角色" prop="roleName" class="formItem">
-          <el-input disabled v-model="dialogForm.roleName" type="password" />
-        </el-form-item>
-        <el-form-item label="所属岗位" prop="postName" class="formItem">
-          <el-input disabled v-model="dialogForm.postName" type="text" />
+        <el-form-item label="所属角色" prop="role" class="formItem">
+          <el-select v-model="dialogForm.role" placeholder="请选择所属角色" clearable>
+            <el-option v-for="(options, optionIndex) in roleList" :label="options.name" :value="options.id" />
+          </el-select>
         </el-form-item>
       </el-form>
     </el-scrollbar>
@@ -72,6 +71,7 @@ import {
   updateUserInfo,
   createUser,
 } from "@/api/user";
+import { getRoleList } from '@/api/role';
 import { convertTime } from "@/tools/common";
 import { ElNotification, ElMessageBox } from "element-plus";
 import { Check } from "@element-plus/icons-vue";
@@ -188,21 +188,19 @@ const operateBtnList = ref({
     },
   ],
 });
+let roleList = ref([])
 const getList = () => {
   loading.value = true;
   getUserList({
     ...queryForm.value,
   }).then((res) => {
+    getRoleList().then(roleRes => {
+      if (roleRes.code == 200) {
+        roleList.value = roleRes.data
+      }
+    })
     if (res.code == 200) {
       res.data.list.forEach((item) => {
-        if (item.sex == 1) {
-          item.sex = "男";
-        } else if (item.sex == 2) {
-          item.sex = "女";
-        } else {
-          item.sex = "未知";
-        }
-
         if (item.status == 0) {
           item.status = "启用";
         } else {
@@ -226,7 +224,6 @@ const receiveSearchForm = (form, type) => {
     ...queryForm.value,
     ...form,
   };
-  console.log("数据改变时===>", queryForm.value);
   if (type == "search") {
     getList();
   }
@@ -312,12 +309,6 @@ const tableTemplate = ref([
           click: () => {
             dialogTitle = "编辑用户";
             dialogForm.value = { ...row };
-            dialogForm.value.sex =
-              dialogForm.value.sex == "男"
-                ? 1
-                : dialogForm.value.sex == "女"
-                  ? 2
-                  : 0;
             fileList.value = [];
             ifFixStatus.value = true;
             ifShowUserDataDialogBox.value = true;
@@ -376,8 +367,7 @@ let dialogForm = ref({
   phone: "",
   email: "",
   accountName: "",
-  roleName: "",
-  postName: "",
+  role: "",
 });
 let fileList = ref([]);
 const beforeUpload = (file) => {
@@ -476,6 +466,10 @@ getList();
       height: 140px;
       margin-right: 10px;
       border-radius: 50%;
+    }
+
+    :deep(.el-select) {
+      width: 100% !important;
     }
   }
 }

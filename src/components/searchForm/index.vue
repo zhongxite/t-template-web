@@ -12,7 +12,7 @@
         </el-select>
         <el-date-picker v-model="props.queryForm[item.prop]" type="daterange" format="YYYY/MM/DD"
           :value-format="props.queryForm[item.format]" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间"
-          @change="changeDatePickerData" v-else-if="item.type == 'daterange'" />
+          @change="changeDatePickerData()" v-else-if="item.type == 'daterange'" />
       </el-form-item>
       <div class="btnBox">
         <el-button class="btn" text bg type="primary" plain @click="onSubmit('search')">搜索</el-button>
@@ -67,7 +67,7 @@ if (props.queryFormList) {
   });
 }
 
-const changeDatePickerData = (i) => {
+const changeDatePickerData = () => {
   onSubmit("change");
 };
 const resetForm = () => {
@@ -81,6 +81,9 @@ const onSubmit = (type) => {
       if (props.queryForm[item.prop] && item.branchValue) {
         form[item.branchValue.start] = props.queryForm[item.prop][0];
         form[item.branchValue.end] = props.queryForm[item.prop][1];
+      }else{
+        form[item.branchValue.start] = "";
+        form[item.branchValue.end] = "";
       }
     } else {
       form[item.prop] = props.queryForm[item.prop];

@@ -41,7 +41,6 @@
 import { Check, Close } from "@element-plus/icons-vue";
 import { ElMessageBox, ElNotification } from "element-plus";
 import { roleAddOrModify, getRoleList, deleteMenus } from '@/api/role';
-import { onActivated, watch } from 'vue';
 import { init } from "@/common/init";
 const SearchForm = defineAsyncComponent(() => {
     return import("@/components/searchForm/index.vue");

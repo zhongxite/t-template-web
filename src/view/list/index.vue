@@ -263,7 +263,7 @@ const tableTemplate = ref([
   {
     type: "btn",
     label: "操作",
-    width: 200,
+    // width: 200,
     list: (row) => [
       {
         name: "创建",

@@ -1,9 +1,9 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import routerPage from "./page";
 import { init } from "@/common/init";
 const routes = [...routerPage];
 const router = createRouter({
-  history: createWebHistory("/admin/"),
+  history: createWebHashHistory("/admin/"),
   routes,
 });
 router.beforeEach(async (to, from, next) => {

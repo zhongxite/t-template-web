@@ -1,0 +1,1 @@
+import{T as e,$ as r}from"./index-8906f66a.js";const s=t=>e({url:"/api/role/getRoleList",method:"post"}),d=t=>e({url:"/api/role/roleAddOrModify",method:"post",data:r.stringify(t)}),a=t=>e({url:"/api/me/deleteMenus",method:"post",data:r.stringify(t)});export{a as d,s as g,d as r};
